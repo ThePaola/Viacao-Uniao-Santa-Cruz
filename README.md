@@ -1,5 +1,6 @@
 # Viacao-Uniao-Santa-Cruz
-Exercício Técnico IT Academy - 17 Edição 
+Exercício Técnico IT Academy - 17 Edição.
+
 Esta atividade consiste na simulação de um sistema de
 reserva de passagens da Viação União Santa Cruz. A figura
 ao lado mostra o mapa de assentos, existem 46 assentos. O
