@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Interface {
@@ -21,40 +22,8 @@ public class Interface {
         listaOnibus.add(onibus16PoaCri);
         listaOnibus.add(onibus20CriFlo);
 
-        visualizaOnibus(listaOnibus, 6);
-        visualizaOnibus(listaOnibus, 10);
-        visualizaOnibus(listaOnibus, 16);
-        visualizaOnibus(listaOnibus, 20);
-    }
-
-    public void executaInterface() {
-        iniciaInterface();
-
-        while (true) {
-            System.out.println("Escolha uma das opções pelo seu numero: ");
-            System.out.println("1. Visualizar mapa de assentos por horario;");
-            System.out.println("2. Reserva passagem;");
-            System.out.println("3. Libera um assento");
-
-            Scanner teclado = new Scanner(System.in);
-
-            System.out.println("Digite a opcao desejada");
-            int opcao = teclado.nextInt();
-
-            switch (opcao) {
-                case 1:
-                    visualizaOnibus(listaOnibus, perguntaHorario(teclado));
-                    break;
-                case 2:
-                    System.out.println("Digite o numero do assento desejado");
-                    reservaPassagem(teclado.nextInt(), listaOnibus, teclado);
-                    break;
-                case 3:
-
-                case default:
-                    break;
-            }
-
+        for (Onibus bus : listaOnibus) {
+            System.out.println(bus.toString());
         }
     }
 
@@ -69,37 +38,154 @@ public class Interface {
         }
     }
 
+    public void executaInterface() {
+        iniciaInterface();
+
+        while (true) {
+            System.out.println("Escolha uma das opções pelo seu numero: ");
+            System.out.println("1. Visualizar mapa de assentos por horario;");
+            System.out.println("2. Reserva passagem;");
+            System.out.println("3. Libera um assento");
+            System.out.println("4. Encontrar assentos livres");
+            System.out.println("5. Dados estatísticos");
+            System.out.println("6. Finalizar programa");
+
+            Scanner teclado = new Scanner(System.in);
+
+            System.out.println("Digite a opção desejada:");
+            int opcao = teclado.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    visualizaOnibus(listaOnibus, perguntaHorario(teclado));
+                    break;
+                case 2:
+                    System.out.println("Digite o numero do assento desejado");
+                    reservaPassagem(teclado.nextInt(), listaOnibus, teclado);
+                    break;
+                case 3:
+                    System.out.println("Digite o numero do assento desejado");
+                    liberaAssento(teclado.nextInt(), teclado);
+                    break;
+
+                case 4:
+                    System.out.println("Digite o numero de assentos desejados");
+                    encontraLivres(teclado.nextInt(), listaOnibus, teclado);
+                    break;
+
+                case 5:
+
+                case 6:
+                    System.exit(0);
+
+            }
+        }
+    }
+
     public void reservaPassagem(int assento, ArrayList<Onibus> listaOnibus, Scanner teclado) {
         int horario = perguntaHorario(teclado);
 
         if (horario == 6) {
-            for (Onibus bus : listaOnibus) {
-                if (bus.getHorario() == 6) {
-
-                } else if (bus.getHorario() == 10) {
-
-                } else if (bus.getHorario() == 16) {
-
-                } else if (bus.getHorario() == 20) {
-
+            try {
+                System.out.println(
+                        "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+                int opcao2 = teclado.nextInt();
+                switch (opcao2) {
+                    case 1:
+                        listaOnibus.get(0).reservaAssento(assento);
+                        break;
+                    case 2:
+                        listaOnibus.get(1).reservaAssento(assento);
+                        break;
                 }
+            } catch (Exception e) {
+                System.out.println("Numero ou letra invalida. Por favor, responda com 1 ou 2.");
             }
+
+        }
+        if (horario == 16) {
+            System.out.println(
+                    "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+            int opcao2 = teclado.nextInt();
+
+            switch (opcao2) {
+                case 1:
+                    listaOnibus.get(3).reservaAssento(assento);
+                    break;
+                case 2:
+                    listaOnibus.get(4).reservaAssento(assento);
+                    break;
+            }
+        }
+        if (horario == 10) {
+            listaOnibus.get(2).reservaAssento(assento);
+
+        }
+        if (horario == 20) {
+            listaOnibus.get(5).reservaAssento(assento);
         }
     }
 
     public void liberaAssento(int assento, Scanner teclado) {
         boolean assentoLiberado = false;
-        for (Onibus bus : listaOnibus) {
-            int horario = perguntaHorario(teclado);
+        int horario = perguntaHorario(teclado);
+        if (horario == 6) {
 
-            if (bus.getLugares().get(assento) && bus.getHorario() == horario) {
-                bus.getLugares().replace(assento, false);
-                bus.setLugares(bus.getLugares());
+            System.out.println(
+                    "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+            int opcao2 = teclado.nextInt();
+
+            switch (opcao2) {
+                case 1:
+                    if (listaOnibus.get(0).getLugares().get(assento)) {
+                        listaOnibus.get(0).getLugares().replace(assento, false);
+                        listaOnibus.get(0).setLugares(listaOnibus.get(0).getLugares());
+                        assentoLiberado = true;
+                    }
+                    break;
+                case 2:
+                    if (listaOnibus.get(1).getLugares().get(assento)) {
+                        listaOnibus.get(1).getLugares().replace(assento, false);
+                        listaOnibus.get(1).setLugares(listaOnibus.get(1).getLugares());
+                        assentoLiberado = true;
+                    }
+                    break;
+            }
+        } else if (horario == 16) {
+            System.out.println(
+                    "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+            int opcao2 = teclado.nextInt();
+
+            switch (opcao2) {
+                case 1:
+                    if (listaOnibus.get(3).getLugares().get(assento)) {
+                        listaOnibus.get(3).getLugares().replace(assento, false);
+                        listaOnibus.get(3).setLugares(listaOnibus.get(3).getLugares());
+                        assentoLiberado = true;
+                    }
+                    break;
+                case 2:
+                    if (listaOnibus.get(4).getLugares().get(assento)) {
+                        listaOnibus.get(4).getLugares().replace(assento, false);
+                        listaOnibus.get(4).setLugares(listaOnibus.get(4).getLugares());
+                        assentoLiberado = true;
+                    }
+                    break;
+            }
+
+        } else if (horario == 10) {
+            if (listaOnibus.get(2).getLugares().get(assento)) {
+                listaOnibus.get(2).getLugares().replace(assento, false);
+                listaOnibus.get(2).setLugares(listaOnibus.get(2).getLugares());
                 assentoLiberado = true;
-                break;
+            }
+        } else if (horario == 20) {
+            if (listaOnibus.get(5).getLugares().get(assento)) {
+                listaOnibus.get(5).getLugares().replace(assento, false);
+                listaOnibus.get(5).setLugares(listaOnibus.get(5).getLugares());
+                assentoLiberado = true;
             }
         }
-
         if (assentoLiberado) {
             System.out.println("Assento liberado com sucesso");
         } else {
@@ -107,9 +193,172 @@ public class Interface {
         }
     }
 
+    public void encontraLivres(int assento, ArrayList<Onibus> listaOnibus, Scanner teclado) {
+        int horario = perguntaHorario(teclado);
+
+        if (horario == 6) {
+            try {
+                System.out.println(
+                        "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+                int opcao2 = teclado.nextInt();
+                switch (opcao2) {
+                    case 1:
+                        HashMap<Integer, Boolean> lugaresBus = listaOnibus.get(0).getLugares();
+                        boolean livre = true;
+                        for (int i = 1; i < lugaresBus.size() + 1; i++) {
+                            livre = true;
+                            for (int j = 0; j < assento; j++) {
+                                if (lugaresBus.get(i + j)) {
+                                    livre = false;
+                                    break;
+                                }
+                                ;
+                            }
+
+                            if (livre) {
+                                System.out.println("Assentos livres em sequencia: ");
+                                for (int j = 0; j < assento; j++) {
+                                    System.out.println(i + j);
+                                    listaOnibus.get(0).reservaAssento(i + j);
+                                }
+                                break;
+                            }
+
+                        }
+                        break;
+                    case 2:
+                        HashMap<Integer, Boolean> lugaresBus2 = listaOnibus.get(1).getLugares();
+                        boolean livre2 = true;
+                        for (int i = 1; i < lugaresBus2.size() + 1; i++) {
+                            livre2 = true;
+                            for (int j = 0; j < assento; j++) {
+                                if (lugaresBus2.get(i + j)) {
+                                    livre2 = false;
+                                    break;
+                                }
+                                ;
+                            }
+                            if (livre2) {
+                                System.out.println("Assentos livres em sequencia: ");
+                                for (int j = 0; j < assento; j++) {
+                                    System.out.println(i + j);
+                                    listaOnibus.get(1).reservaAssento(i + j);
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Numero ou letra invalida. Por favor, responda com 1 ou 2.");
+            }
+
+        }
+        if (horario == 16) {
+            try {
+                System.out.println(
+                        "Digite 1. para a linha Porto Alegre -> Florianopolis ou 2. para a linha Porto Alegre -> Criciuma");
+                int opcao2 = teclado.nextInt();
+                switch (opcao2) {
+                    case 1:
+                        HashMap<Integer, Boolean> lugaresBus = listaOnibus.get(3).getLugares();
+                        boolean livre = true;
+                        for (int i = 1; i < lugaresBus.size() + 1; i++) {
+                            livre = true;
+                            for (int j = 0; j < assento; j++) {
+                                if (lugaresBus.get(i + j)) {
+                                    livre = false;
+                                    break;
+                                }
+                                ;
+                            }
+                            if (livre) {
+                                System.out.println("Assentos livres em sequencia: ");
+                                for (int j = 0; j < assento; j++) {
+                                    System.out.println(i + j);
+                                    listaOnibus.get(3).reservaAssento(i + j);
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        HashMap<Integer, Boolean> lugaresBus2 = listaOnibus.get(4).getLugares();
+                        boolean livre2 = true;
+                        for (int i = 1; i < lugaresBus2.size() + 1; i++) {
+                            livre2 = true;
+                            for (int j = 0; j < assento; j++) {
+                                if (lugaresBus2.get(i + j)) {
+                                    livre2 = false;
+                                    break;
+                                }
+                                ;
+                            }
+                            if (livre2) {
+                                System.out.println("Assentos livres em sequencia: ");
+                                for (int j = 0; j < assento; j++) {
+                                    System.out.println(i + j);
+                                    listaOnibus.get(4).reservaAssento(i + j);
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Numero ou letra invalida. Por favor, responda com 1 ou 2.");
+            }
+
+        }
+        if (horario == 10) {
+            HashMap<Integer, Boolean> lugaresBus = listaOnibus.get(2).getLugares();
+            boolean livre = true;
+            for (int i = 1; i < lugaresBus.size() + 1; i++) {
+                livre = true;
+                for (int j = 0; j < assento; j++) {
+                    if (lugaresBus.get(i + j)) {
+                        livre = false;
+                        break;
+                    }
+                    ;
+                }
+                if (livre) {
+                    System.out.println("Assentos livres em sequencia: ");
+                    for (int j = 0; j < assento; j++) {
+                        System.out.println(i + j);
+                        listaOnibus.get(2).reservaAssento(i + j);
+                    }
+                    break;
+                }
+            }
+        }
+        if (horario == 20) {
+            HashMap<Integer, Boolean> lugaresBus = listaOnibus.get(5).getLugares();
+            boolean livre = true;
+            for (int i = 1; i < lugaresBus.size() + 1; i++) {
+                livre = true;
+                for (int j = 0; j < assento; j++) {
+                    if (lugaresBus.get(i + j)) {
+                        livre = false;
+                        break;
+                    }
+                    ;
+                }
+                if (livre) {
+                    System.out.println("Assentos livres em sequencia: ");
+                    for (int j = 0; j < assento; j++) {
+                        System.out.println(i + j);
+                        listaOnibus.get(5).reservaAssento(i + j);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     private int perguntaHorario(Scanner teclado) {
-        System.out.println("Escolha o horario da passagem: ");
-        System.out.println("Opcoes: 6, 10, 16 ou 20");
+        System.out.println("Escolha o horário da passagem: ");
+        System.out.println("Opções: 6, 10, 16 ou 20");
 
         int horario = teclado.nextInt();
 
@@ -117,7 +366,7 @@ public class Interface {
     }
 
     private String perguntaRotaDoBus(int horario, Scanner teclado) {
-        System.out.println("Escolha a rota do onibus do horario selecionado: ");
+        System.out.println("Escolha a rota do ônibus do horário selecionado: ");
         System.out.println("");
         return "";
     }
