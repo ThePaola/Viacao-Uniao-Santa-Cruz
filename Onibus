@@ -1,0 +1,85 @@
+import java.util.HashMap;
+
+public class Onibus {
+    private double preco;
+    private int horario;
+    private String partida;
+    private String destino;
+
+    private HashMap<Integer, Boolean> lugares;
+
+    public Onibus(double preco, int horario, String partida, String destino) {
+        this.preco = preco;
+        this.horario = horario;
+        this.partida = partida;
+        this.destino = destino;
+
+        lugares = new HashMap<>();
+
+        for (int i = 1; i <= 46; i++) {
+            lugares.put(i, false);
+        }
+    }
+
+    public void visualizaLugares() {
+        lugares.forEach((assento, ocupado) -> {
+            String ocupadoOuDisponivel = (ocupado) ? "Ocupado" : "Disponivel";
+            System.out.println("Assento: " + assento + " " + ocupadoOuDisponivel);
+        });
+    }
+
+    public String reservaAssento(int assento) {
+        if (lugares.get(assento)) {
+            return "Lugar ocupado. Escolha outro assento.";
+        } else {
+            lugares.replace(assento, true);
+            return "Lugar disponivel. Voce reservou com sucesso";
+        }
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    public int getHorario() {
+        return horario;
+    }
+
+    public void setHorario(int horario) {
+        this.horario = horario;
+    }
+
+    public String getPartida() {
+        return partida;
+    }
+
+    public void setPartida(String partida) {
+        this.partida = partida;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public HashMap<Integer, Boolean> getLugares() {
+        return lugares;
+    }
+
+    public void setLugares(HashMap<Integer, Boolean> lugares) {
+        this.lugares = lugares;
+    }
+
+    @Override
+    public String toString() {
+        return "Onibus [Partida=" + partida + ", Destino=" + destino+ ", Horario=" + horario + "H, preco=R$" + preco
+                + "]";
+    }
+}
