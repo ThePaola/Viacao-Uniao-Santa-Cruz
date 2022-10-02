@@ -1,0 +1,124 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Interface {
+    private ArrayList<Onibus> listaOnibus;
+
+    private void iniciaInterface() {
+        Onibus onibus6PoaFlo = new Onibus(19.45, 6, "Porto Alegre", "Florianopolis");
+        Onibus onibus6PoaCri = new Onibus(12.90, 6, "Porto Alegre", "Criciuma");
+        Onibus onibus10CriFlo = new Onibus(7.30, 10, "Criciuma", "Florianopolis");
+        Onibus onibus16PoaFlo = new Onibus(23.50, 16, "Porto Alegre", "Florianopolis");
+        Onibus onibus16PoaCri = new Onibus(15.90, 16, "Porto Alegre", "Criciuma");
+        Onibus onibus20CriFlo = new Onibus(10.30, 20, "Criciuma", "Florianopolis");
+
+        listaOnibus = new ArrayList<>();
+
+        listaOnibus.add(onibus6PoaFlo);
+        listaOnibus.add(onibus6PoaCri);
+        listaOnibus.add(onibus10CriFlo);
+        listaOnibus.add(onibus16PoaFlo);
+        listaOnibus.add(onibus16PoaCri);
+        listaOnibus.add(onibus20CriFlo);
+
+        visualizaOnibus(listaOnibus, 6);
+        visualizaOnibus(listaOnibus, 10);
+        visualizaOnibus(listaOnibus, 16);
+        visualizaOnibus(listaOnibus, 20);
+    }
+
+    public void executaInterface() {
+        iniciaInterface();
+
+        while (true) {
+            System.out.println("Escolha uma das opções pelo seu numero: ");
+            System.out.println("1. Visualizar mapa de assentos por horario;");
+            System.out.println("2. Reserva passagem;");
+            System.out.println("3. Libera um assento");
+
+            Scanner teclado = new Scanner(System.in);
+
+            System.out.println("Digite a opcao desejada");
+            int opcao = teclado.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    visualizaOnibus(listaOnibus, perguntaHorario(teclado));
+                    break;
+                case 2:
+                    System.out.println("Digite o numero do assento desejado");
+                    reservaPassagem(teclado.nextInt(), listaOnibus, teclado);
+                    break;
+                case 3:
+
+                case default:
+                    break;
+            }
+
+        }
+    }
+
+    public void visualizaOnibus(ArrayList<Onibus> onibus, int horario) {
+        for (Onibus bus : onibus) {
+            if (bus.getHorario() == horario) {
+                System.out.println("Rota: " + bus.getPartida() + " -> " + bus.getDestino());
+                System.out.println("Horario: " + bus.getHorario() + "H");
+                System.out.println("Disponibilidade dos assentos: ");
+                bus.visualizaLugares();
+            }
+        }
+    }
+
+    public void reservaPassagem(int assento, ArrayList<Onibus> listaOnibus, Scanner teclado) {
+        int horario = perguntaHorario(teclado);
+
+        if (horario == 6) {
+            for (Onibus bus : listaOnibus) {
+                if (bus.getHorario() == 6) {
+
+                } else if (bus.getHorario() == 10) {
+
+                } else if (bus.getHorario() == 16) {
+
+                } else if (bus.getHorario() == 20) {
+
+                }
+            }
+        }
+    }
+
+    public void liberaAssento(int assento, Scanner teclado) {
+        boolean assentoLiberado = false;
+        for (Onibus bus : listaOnibus) {
+            int horario = perguntaHorario(teclado);
+
+            if (bus.getLugares().get(assento) && bus.getHorario() == horario) {
+                bus.getLugares().replace(assento, false);
+                bus.setLugares(bus.getLugares());
+                assentoLiberado = true;
+                break;
+            }
+        }
+
+        if (assentoLiberado) {
+            System.out.println("Assento liberado com sucesso");
+        } else {
+            System.out.println("Assento já está disponivel");
+        }
+    }
+
+    private int perguntaHorario(Scanner teclado) {
+        System.out.println("Escolha o horario da passagem: ");
+        System.out.println("Opcoes: 6, 10, 16 ou 20");
+
+        int horario = teclado.nextInt();
+
+        return horario;
+    }
+
+    private String perguntaRotaDoBus(int horario, Scanner teclado) {
+        System.out.println("Escolha a rota do onibus do horario selecionado: ");
+        System.out.println("");
+        return "";
+    }
+}
