@@ -17,23 +17,30 @@ public class Onibus {
         lugares = new HashMap<>();
 
         for (int i = 1; i <= 46; i++) {
-            lugares.put(i, false);
+            
+            if (partida.equals("Porto Alegre") && i < 13) {
+                lugares.put(i, true);
+            }
+            else {
+                lugares.put(i, false); 
+            }
         }
     }
 
     public void visualizaLugares() {
         lugares.forEach((assento, ocupado) -> {
-            String ocupadoOuDisponivel = (ocupado) ? "Ocupado" : "Disponivel";
+            String ocupadoOuDisponivel = (ocupado) ? "Ocupado" : "Disponível";
             System.out.println("Assento: " + assento + " " + ocupadoOuDisponivel);
         });
     }
 
-    public String reservaAssento(int assento) {
+    public void reservaAssento(int assento) {
         if (lugares.get(assento)) {
-            return "Lugar ocupado. Escolha outro assento.";
-        } else {
+            System.out.println("Lugar ocupado. Por favor, escolha outro assento.");
+        }
+        else {
             lugares.replace(assento, true);
-            return "Lugar disponivel. Voce reservou com sucesso";
+            System.out.println("Lugar disponível. Lugar reservado com sucesso.");
         }
     }
 
@@ -79,7 +86,7 @@ public class Onibus {
 
     @Override
     public String toString() {
-        return "Onibus [Partida=" + partida + ", Destino=" + destino+ ", Horario=" + horario + "H, preco=R$" + preco
-                + "]";
+        return "Onibus [Partida =" + partida + ", Destino = " + destino + ", Horário = " + horario + "H, preco = R$" + preco + "]";
+
     }
 }
